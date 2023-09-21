@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { Toaster} from "react-hot-toast";
+import { useState, useEffect } from "react";
+import Contact from "./components/Contact";
+import Header, { HeaderPhone } from "./components/Header";
+import Home from "./components/Home";
+import Services from "./components/Services";
+import Work from "./components/Work";
+import Footer from "./components/Footer";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [menuOpen, setmenuOpen] = useState(false)
+  const [ratio, setRatio] = useState(window.innerWidth / window.innerHeight);
+  useEffect(() => {
+    const resizeRatio = () => {
+      setRatio(window.innerWidth / window.innerHeight);
+    };
+
+    window.addEventListener("resize", resizeRatio);
+
+    return () => {
+      window.removeEventListener("resize", resizeRatio);
+    };
+  }, [ratio]);
+
+
+  return ratio < 2.5 ? (
+    <>
+    <HeaderPhone menuOpen={menuOpen} setmenuOpen={setmenuOpen}/>
+      <Header menuOpen={menuOpen} setmenuOpen={setmenuOpen} />
+      <Home/>
+      <Work/>
+      <Services/>
+      <Contact/>
+      <Footer/>
+      <Toaster/>
+    </>
+  ): (
+    <em id="customMessage">Please Change the ratio to View!</em>
+  )
 }
 
 export default App;
